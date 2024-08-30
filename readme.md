@@ -1,0 +1,1 @@
+entities diagram: https://lucid.app/lucidchart/2fafe1e9-d494-4864-b58e-84c1a3858199/edit?viewport_loc=-3272%2C-308%2C9536%2C3160%2CHWEp-vi-RSFO&invitationId=inv_499006fd-6693-48b0-a7de-85e33bbb4dc7
