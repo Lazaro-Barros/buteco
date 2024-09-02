@@ -22,6 +22,8 @@ func NewUser(
 	if err := validatePassword(password); err != nil {
 		return nil, err
 	}
+	// other validations
+
 	obj = &User{
 		uuid:         uuid.New().String(),
 		name:         name,
