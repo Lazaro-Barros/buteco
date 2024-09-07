@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/Lazaro-Barros/buteco/domain/entities"
+import entities "github.com/Lazaro-Barros/buteco/command/domain/entities/item"
 
 type ItemMemoryRepository struct {
 	Items map[string]entities.Item
