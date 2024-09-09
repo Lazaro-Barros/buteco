@@ -3,13 +3,13 @@ package handler
 import (
 	"net/http"
 
-	"github.com/Lazaro-Barros/buteco/command/application/product"
 	product_service "github.com/Lazaro-Barros/buteco/command/application/product"
+	"github.com/Lazaro-Barros/buteco/command/infra/drivers/http/handler"
 	"github.com/gin-gonic/gin"
 )
 
 type ProductHandler struct {
-	productService *product.ProductService
+	productService *product_service.ProductService
 }
 
 // NewProductHandler cria um novo ProductHandler.
@@ -20,7 +20,7 @@ func NewProductHandler(service *product_service.ProductService) *ProductHandler 
 }
 
 // CreateProductHandler lida com a requisição de criação de um novo produto.
-func (h *ProductHandler) CreateProductHandler(c *gin.Context) {
+func (h *ProductHandler) CreateProductHandler(c handler.Context) {
 	var createProductDTO product_service.CreateProductDTO
 
 	// Valida os dados de entrada do JSON.
@@ -40,7 +40,7 @@ func (h *ProductHandler) CreateProductHandler(c *gin.Context) {
 }
 
 // UpdateProductHandler lida com a requisição de atualização de um produto existente.
-func (h *ProductHandler) UpdateProductHandler(c *gin.Context) {
+func (h *ProductHandler) UpdateProductHandler(c handler.Context) {
 	var updateProductDTO product_service.UpdateProductDTO
 
 	// Valida os dados de entrada do JSON.
@@ -59,7 +59,7 @@ func (h *ProductHandler) UpdateProductHandler(c *gin.Context) {
 }
 
 // DeleteProductHandler lida com a exclusão de um produto.
-func (h *ProductHandler) DeleteProductHandler(c *gin.Context) {
+func (h *ProductHandler) DeleteProductHandler(c handler.Context) {
 	// Chama o serviço para excluir o produto.
 	if err := h.productService.DeleteProduct(c.Param("uuid")); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

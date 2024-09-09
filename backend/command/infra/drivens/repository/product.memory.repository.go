@@ -6,13 +6,19 @@ type ProductMemoryRepository struct {
 	Products map[string]ProductEntity.Product
 }
 
+func NewProductMemoryRepository() *ProductMemoryRepository {
+	return &ProductMemoryRepository{
+		Products: make(map[string]ProductEntity.Product),
+	}
+}
+
 func (p ProductMemoryRepository) Save(product *ProductEntity.Product) error {
 	p.Products[product.Uuid()] = *product
 	return nil
 }
 
-func (p ProductMemoryRepository) Update(product *ProductEntity.Product) error {
-	p.Products[product.Uuid()] = *product
+func (p ProductMemoryRepository) Update(uuid string, product *ProductEntity.Product) error {
+	p.Products[uuid] = *product
 	return nil
 }
 
