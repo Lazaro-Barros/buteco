@@ -3,13 +3,13 @@ package entities_test
 import (
 	"testing"
 
-	"github.com/Lazaro-Barros/buteco/domain/entities"
+	establishmentEntity "github.com/Lazaro-Barros/buteco/command/domain/entities/establishment"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestEstablishment(t *testing.T) {
 	t.Run("Test Create establishment", func(t *testing.T) {
-		establishment, err := entities.NewEstablishment(
+		establishment, err := establishmentEntity.NewEstablishment(
 			"Bar do Pote",
 			"Rua Araibú 335",
 		)

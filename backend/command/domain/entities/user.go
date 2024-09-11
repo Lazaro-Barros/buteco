@@ -14,6 +14,11 @@ type User struct {
 	hashPassword string
 }
 
+type IUserRepository interface {
+	Save(user *User) error
+	Update(user *User) error
+}
+
 func NewUser(
 	name string,
 	email string,

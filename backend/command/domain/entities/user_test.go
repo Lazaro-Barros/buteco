@@ -3,7 +3,7 @@ package entities_test
 import (
 	"testing"
 
-	"github.com/Lazaro-Barros/buteco/domain/entities"
+	"github.com/Lazaro-Barros/buteco/command/domain/entities"
 	"github.com/stretchr/testify/assert"
 )
 
