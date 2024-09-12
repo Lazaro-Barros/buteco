@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	orderEntity "github.com/Lazaro-Barros/buteco/command/domain/order"
-	itemEntity "github.com/Lazaro-Barros/buteco/command/domain/entities/item"
+	productEntity "github.com/Lazaro-Barros/buteco/command/domain/entities/product"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -42,14 +42,16 @@ func TestItem(t *testing.T) {
 
 	t.Run("should add a new Item on Order", func(t *testing.T) {
 		order := sut(t, 1)
-		item, errItem := itemEntity.NewItem(
+		product, errProduct := productEntity.NewProduct(
 			"Café Coado",
+			"Café especial 200ml",
 			15000,
+			true,
 		)
 		order.AddItem(
-			*item,
+			*product,
 		)
-		assert.NoError(t, errItem)
+		assert.NoError(t, errProduct)
 		assert.NotEmpty(t, order.Uuid())
 		assert.Len(t, order.Items(), 1)
 	})
@@ -57,14 +59,16 @@ func TestItem(t *testing.T) {
 	t.Run("should update total of order when a new Item is added", func(t *testing.T) {
 		order := sut(t, 1)
 		assert.Equal(t, 0, order.Total())
-		item, errItem := itemEntity.NewItem(
+		product, errProduct := productEntity.NewProduct(
 			"Café Coado",
+			"Café especial 200ml",
 			15000,
+			true,
 		)
 		order.AddItem(
-			*item,
+			*product,
 		)
-		assert.NoError(t, errItem)
+		assert.NoError(t, errProduct)
 		assert.Equal(t, 15000, order.Total())
 	})
 
@@ -76,15 +80,51 @@ func TestItem(t *testing.T) {
 
 	t.Run("shouldnt add a Item when the Order is payed", func(t *testing.T) {
 		order := sut(t, 1)
-		item, errItem := itemEntity.NewItem(
+		product, errProduct := productEntity.NewProduct(
 			"Café Coado",
+			"Café especial 200ml",
 			15000,
+			true,
 		)
 		order.Pay()
 		errAddItem := order.AddItem(
-			*item,
+			*product,
 		)
-		assert.NoError(t, errItem)
+		assert.NoError(t, errProduct)
 		assert.Error(t, errAddItem)
+	})
+
+	t.Run("should return total correctly", func(t *testing.T) {
+		order := sut(t, 1)
+		product, errProduct := productEntity.NewProduct(
+			"Café Coado",
+			"Café especial 200ml",
+			15000,
+			true,
+		)
+		order.AddItem(
+			*product,
+		)
+		order.AddItem(
+			*product,
+		)
+		assert.NoError(t, errProduct)
+		order.Total()
+		assert.Equal(t, order.Total(), 30000)
+	})
+
+	t.Run("shouldnt add a invisible Product on Order", func(t *testing.T) {
+		order := sut(t, 1)
+		product, _ := productEntity.NewProduct(
+			"Café Coado",
+			"Café especial 200ml",
+			15000,
+			false,
+		)
+		errAddItem := order.AddItem(
+			*product,
+		)
+		assert.Error(t, errAddItem)
+		assert.Len(t, order.Items(), 0)
 	})
 }
