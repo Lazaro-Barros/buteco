@@ -8,6 +8,10 @@ type Item struct {
 	price int
 }
 
+type IItemRepository interface {
+	Save(item *Item) error
+}
+
 func NewItem(
 	name string,
 	price int,
@@ -22,14 +26,14 @@ func NewItem(
 	return
 }
 
-type IItemRepository interface {
-	Save(item *Item) error
-}
-
 func (obj Item) Uuid() string {
 	return obj.uuid
 }
 
 func (obj Item) Name() string {
 	return obj.name
+}
+
+func (obj Item) Price() int {
+	return obj.price
 }
