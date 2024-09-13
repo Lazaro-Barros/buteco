@@ -5,8 +5,8 @@ import (
 
 	"github.com/google/uuid"
 
-	// fiquei com duvida nesse import, se essa é a melhor forma.
-	item "github.com/Lazaro-Barros/buteco/command/domain/entities/item"
+	itemEntity "github.com/Lazaro-Barros/buteco/command/domain/entities/item"
+	productEntity "github.com/Lazaro-Barros/buteco/command/domain/entities/product"
 )
 
 type Order struct {
@@ -14,7 +14,7 @@ type Order struct {
 	order_number	int
 	total			int
 	payed			bool
-	items			[]item.Item
+	items			[]itemEntity.Item
 }
 
 func NewOrder(
@@ -34,6 +34,10 @@ func (o *Order) Uuid() string {
 }
 
 func (o *Order) Total() int {
+	o.total = 0
+	for _, item := range o.items {
+		o.total += item.Price()
+	}
 	return o.total
 }
 
@@ -45,16 +49,22 @@ func (o *Order) OrderNumber() int {
 	return o.order_number
 }
 
-func (o *Order) Items() []item.Item {
+func (o *Order) Items() []itemEntity.Item {
 	return o.items
 }
 
-func (o *Order) AddItem(item item.Item) error {
+func (o *Order) AddItem(product productEntity.Product) error {
 	if o.payed {
-		return errors.New("cannot add item to a paid order")
+		return errors.New("cannot add product to a paid order")
 	}
-	o.items = append(o.items, item)
-	o.total += item.Price()
+	if !product.Visible() {
+		return errors.New("cannot add a invisible product")
+	}
+	item, _ := itemEntity.NewItem(
+		product.Name(),
+		product.Value(),
+	)
+	o.items = append(o.items, *item)
 	return nil
 }
 
