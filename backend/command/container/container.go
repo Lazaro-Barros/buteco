@@ -2,12 +2,14 @@ package container
 
 import (
 	"sync"
+	"log"
 
 	"github.com/Lazaro-Barros/buteco/command/application/product"
 	entities "github.com/Lazaro-Barros/buteco/command/domain/entities/product"
 	"github.com/Lazaro-Barros/buteco/command/infra/drivens/repository"
 	handler "github.com/Lazaro-Barros/buteco/command/infra/drivers/http/handler/product"
 	"github.com/Lazaro-Barros/buteco/command/infra/drivers/http/router"
+	"github.com/Lazaro-Barros/buteco/command/infra/drivers/db"
 )
 
 var container sync.Map
@@ -59,4 +61,14 @@ func GetRouter() router.Router {
 
 		return r
 	}).(router.Router)
+}
+
+func GetDatabase() db.DB {
+	return getService("database", func() interface{} {
+		db, err := db.NewPgxAdapter("postgres://root:root@localhost:5432/root")
+		if err != nil {
+			log.Fatalf("Failed to connect to the database: %v", err)
+		}
+		return db
+	}).(db.DB)
 }
