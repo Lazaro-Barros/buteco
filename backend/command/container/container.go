@@ -1,16 +1,20 @@
 package container
 
 import (
+	"log"
 	"sync"
-
+	"context"
+	"time"
 	"github.com/Lazaro-Barros/buteco/command/application/product"
 	entities "github.com/Lazaro-Barros/buteco/command/domain/entities/product"
 	"github.com/Lazaro-Barros/buteco/command/infra/drivens/repository"
+	"github.com/Lazaro-Barros/buteco/command/infra/drivers/db"
 	handler "github.com/Lazaro-Barros/buteco/command/infra/drivers/http/handler/product"
 	"github.com/Lazaro-Barros/buteco/command/infra/drivers/http/router"
 )
 
 var container sync.Map
+var timeoutToPingDB = 5
 
 func Init() {
 	container = sync.Map{}
@@ -59,4 +63,21 @@ func GetRouter() router.Router {
 
 		return r
 	}).(router.Router)
+}
+
+func GetDatabase() db.DB {
+	return getService("database", func() interface{} {
+		db, err := db.NewPgxAdapter("postgres://root:root@localhost:5432/root")
+		if err != nil {
+			log.Fatalf("Failed to connect to the database: %v", err)
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeoutToPingDB)*time.Second)
+		defer cancel()
+
+		err = db.Ping(ctx)
+		if err != nil {
+			log.Fatalf("Database ping failed: %v", err)
+		}
+		return db
+	}).(db.DB)
 }

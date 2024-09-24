@@ -7,6 +7,6 @@ import (
 func main() {
 	container.Init()
 	r := container.GetRouter()
+	container.GetDatabase()
 	r.Run(":8080")
-
 }
