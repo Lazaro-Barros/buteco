@@ -22,6 +22,10 @@ func NewPgxAdapter(connString string) (*PgxAdapter, error) {
     }, nil
 }
 
+func (p *PgxAdapter) Ping(ctx context.Context) error {
+    return p.pool.Ping(ctx)
+}
+
 func (p *PgxAdapter) Query(ctx context.Context, query string, args ...interface{}) (Rows, error) {
     rows, err := p.pool.Query(ctx, query, args...)
     if err != nil {

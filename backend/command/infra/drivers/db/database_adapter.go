@@ -5,6 +5,7 @@ import "context"
 type DB interface {
     Query(ctx context.Context, query string, args ...interface{}) (Rows, error)
     Exec(ctx context.Context, query string, args ...interface{}) (Result, error)
+    Ping(ctx context.Context) error
     Close() error
 }
 
