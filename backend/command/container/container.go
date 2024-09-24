@@ -67,7 +67,7 @@ func GetRouter() router.Router {
 
 func GetDatabase() db.DB {
 	return getService("database", func() interface{} {
-		db, err := db.NewPgxAdapter("postgres://root:root@localhost:5432/root")
+		db, err := db.NewPgxAdapter("postgres://root:root@database:5432/root")
 		if err != nil {
 			log.Fatalf("Failed to connect to the database: %v", err)
 		}
