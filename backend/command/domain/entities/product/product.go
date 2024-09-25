@@ -22,6 +22,7 @@ type Product struct {
 
 type ProductRepository interface {
 	Save(product *Product) error
+	List() (map[string]Product, error)
 	Update(uuid string, product *Product) error
 	Delete(uuid string) error
 	GetByUuid(uuid string) (*Product, error)
