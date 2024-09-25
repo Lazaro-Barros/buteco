@@ -17,6 +17,10 @@ func (p ProductMemoryRepository) Save(product *ProductEntity.Product) error {
 	return nil
 }
 
+func (p ProductMemoryRepository) List() (Products map[string]ProductEntity.Product, err error) {
+	return p.Products, nil
+}
+
 func (p ProductMemoryRepository) Update(uuid string, product *ProductEntity.Product) error {
 	p.Products[uuid] = *product
 	return nil

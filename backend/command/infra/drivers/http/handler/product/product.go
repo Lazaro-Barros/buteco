@@ -39,6 +39,19 @@ func (h *ProductHandler) CreateProductHandler(c handler.Context) {
 	c.JSON(http.StatusCreated, gin.H{"uuid": uuid})
 }
 
+// ListProductsHandler lida com a requisição para listar todos os produtos.
+func (h *ProductHandler) ListProductsHandler(c handler.Context) {
+	
+	// Chama o serviço para listar os produtos.
+	products, err := h.productService.ListProducts()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"products": products})
+}
+
 // UpdateProductHandler lida com a requisição de atualização de um produto existente.
 func (h *ProductHandler) UpdateProductHandler(c handler.Context) {
 	var updateProductDTO product_service.UpdateProductDTO

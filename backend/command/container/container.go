@@ -57,8 +57,9 @@ func GetRouter() router.Router {
 
 		//product
 		productHandler := GetProductHandler()
+		r.GET("/product", productHandler.ListProductsHandler)
 		r.PUT("/product", productHandler.UpdateProductHandler)
-		r.POST("/product", productHandler.UpdateProductHandler)
+		r.POST("/product", productHandler.CreateProductHandler)
 		r.DELETE("/product", productHandler.DeleteProductHandler)
 
 		return r

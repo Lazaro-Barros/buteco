@@ -2,7 +2,7 @@ package product
 
 import (
 	"errors"
-
+	ProductEntity "github.com/Lazaro-Barros/buteco/command/domain/entities/product"
 	entities "github.com/Lazaro-Barros/buteco/command/domain/entities/product"
 )
 
@@ -34,6 +34,10 @@ func (s *ProductService) CreateProduct(
 	}
 
 	return product.Uuid(), nil
+}
+
+func (s *ProductService) ListProducts() (Products map[string]ProductEntity.Product, err error) {
+	return s.repo.List()
 }
 
 // UpdateProduct é o caso de uso para atualizar um produto existente.
